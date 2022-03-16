@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <base href="/">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Carbon Components</title>
+  <style>
+    .offleft {
+      position: absolute;
+      top: 0;
+      left: -10000px;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+  </style>
+  <link rel="stylesheet" type="text/css" href="<%= configuration.csspath %>">
+</head>
+
+<body class="bx--body demo--container demo--container--form">
+  <div class="demo--container__panel" data-floating-menu-container data-card-list>
+    <!--
+  Copyright IBM Corp. 2016, 2018
+
+  This source code is licensed under the Apache-2.0 license found in the
+  LICENSE file in the root directory of this source tree.
+-->
+    <h2 style="width:75%; padding-left:30px;padding-bottom:30px;">Cloudant configuration form</h2>
+    <form style="width:75%; padding-left:30px;">
+      <div data-notification id="status"
+        class="bx--inline-notification bx--inline-notification--info bx--inline-notification--low-contrast"
+        role="alert">
+        <div class="bx--inline-notification__details">
+          <svg focusable="false" preserveAspectRatio="xMidYMid meet" style="will-change: transform;"
+            xmlns="http://www.w3.org/2000/svg" class="bx--inline-notification__icon" width="20" height="20"
+            viewBox="0 0 32 32" aria-hidden="true">
+            <path
+              d="M16,2A14,14,0,1,0,30,16,14,14,0,0,0,16,2Zm0,5a1.5,1.5,0,1,1-1.5,1.5A1.5,1.5,0,0,1,16,7Zm4,17.12H12V21.88h2.88V15.12H13V12.88h4.13v9H20Z">
+            </path>
+          </svg>
+          <div class="bx--inline-notification__text-wrapper">
+            <p class="bx--inline-notification__title">Success</p>
+            <p class="bx--inline-notification__subtitle">Cloudant configuration updated successfully</p>
+          </div>
+        </div>
+      </div>
+      <div class="bx--form-item">
+        <legend class="bx--label">Authentication Type</legend>
+        <div class="bx--radio-button-group ">
+          <div class="bx--radio-button-wrapper">
+            <input id="iamopt" class="bx--radio-button" type="radio" value="iam_auth" name="auth_type" tabindex="0"
+              onclick="javascript:typeCheck();">
+            <label for="iamopt" class="bx--radio-button__label">
+              <span class="bx--radio-button__appearance"></span>
+              <span class="bx--radio-button__label-text">IAM Authentication</span>
+            </label>
+          </div>
+          <div class="bx--radio-button-wrapper">
+            <input id="basicauthopt" class="bx--radio-button" type="radio" value="basic_auth" name="auth_type"
+              tabindex="0" onclick="javascript:typeCheck();">
+            <label for="basicauthopt" class="bx--radio-button__label">
+              <span class="bx--radio-button__appearance"></span>
+              <span class="bx--radio-button__label-text">Basic Authentication</span>
+            </label>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="bx--form-item">
+        <label for="text-input-3" class="bx--label">Cloudant URL</label>
+        <input id="text-input-3" type="text" class="bx--text-input" placeholder="Optional placeholder text"
+          name="cloudant_url" required value="<%= configuration.cloudantURL %>">
+      </div>
+
+      <div id="iam_auth_type">
+        <div class="bx--form-item">
+          <label for="text-input-3" class="bx--label">Cloudant API Key</label>
+          <input id="text-input-3" type="text" class="bx--text-input" placeholder="Optional placeholder text"
+            name="cloudant_apikey" required value="<%= configuration.cloudantAPIKey %>">
+        </div>
+      </div>
+
+      <div id="basic_auth_type">
+        <div class="bx--form-item">
+          <label for="text-input-3" class="bx--label">Cloudant Username</label>
+          <input id="text-input-3" type="text" class="bx--text-input" placeholder="Optional placeholder text"
+            name="cloudant_username" required value="<%= configuration.cloudantUserName %>">
+        </div>
+
+        <div class="bx--form-item">
+          <label for="text-input-3" class="bx--label">Cloudant Password</label>
+          <input id="text-input-3" type="text" class="bx--text-input" placeholder="Optional placeholder text"
+            name="cloudant_password" required value="<%= configuration.cloudantPassword %>">
+        </div>
+      </div>
+      <div class="bx--form-item">
+        <button class="bx--btn bx--btn--primary" type="submit" href="/" onclick="submitData()">Submit
+          configuration</button>
+      </div>
+
+      <div class="bx--form-item">
+        <button class="bx--btn bx--btn--primary" href="/" onclick="loadCloudantExplorer()">Update cloudant
+          explorer</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const vscode = acquireVsCodeApi();
+    window.onload = updateType();
+    function updateType() {
+      document.getElementById("status").style.display = "none";
+      let authType = "<%= configuration.authType %>";
+      if (authType === "iam_auth") {
+        document.getElementById('iamopt').checked = true;
+        document.getElementById('basicauthopt').checked = false;
+      }
+      else {
+        document.getElementById('basicauthopt').checked = true;
+        document.getElementById('iamopt').checked = false;
+      }
+      typeCheck();
+    }
+
+    function submitData(event) {
+      const form = document.querySelector('form');
+      const data = Object.fromEntries(new FormData(form).entries());
+      document.getElementById("status").style.display = "block";
+      vscode.postMessage({
+        command: 'sendcommand',
+        text: data
+      })
+    }
+
+    function typeCheck() {
+
+      if (document.getElementById('iamopt').checked) {
+        document.getElementById('iam_auth_type').style.display = 'block';
+        document.getElementById('basic_auth_type').style.display = 'none';
+      }
+      else {
+        document.getElementById('iam_auth_type').style.display = 'none';
+        document.getElementById('basic_auth_type').style.display = 'block';
+      }
+    }
+
+    function loadCloudantExplorer() {
+      const form = document.querySelector('form');
+      const data = Object.fromEntries(new FormData(form).entries());
+      document.getElementById("status").style.display = "block";
+
+      vscode.postMessage({
+        command: 'loadcloudantexplorer',
+        text: "data"
+      })
+    }
+  </script>
+</body>
+
+</html>

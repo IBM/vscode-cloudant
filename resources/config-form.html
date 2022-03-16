@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Account registration form</title>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600' rel='stylesheet'
+    type='text/css'>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+  <style>
+    html,
+    body {
+      min-height: 100%;
+    }
+
+    body,
+    div,
+    form,
+    input,
+    select,
+    p {
+      padding: 0;
+      margin: 0;
+      outline: none;
+      font-family: Roboto, Arial, sans-serif;
+      font-size: 14px;
+      color: #666;
+    }
+
+    h1 {
+      margin: 0;
+      font-weight: 400;
+    }
+
+    h3 {
+      margin: 12px 0;
+      color: #8ebf42;
+    }
+
+    .main-block {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #1d1d1d;
+    }
+
+    form {
+      width: 100%;
+      padding: 20px;
+    }
+
+    fieldset {
+      border: none;
+      border-top: 1px solid #8ebf42;
+    }
+
+    label {
+      padding: 0 5px;
+      text-align: right;
+      vertical-align: middle;
+    }
+
+    input {
+      padding: 5px;
+      vertical-align: middle;
+    }
+
+    .checkbox {
+      margin-bottom: 10px;
+    }
+
+    select,
+    .children,
+    .gender,
+    .bdate-block {
+      width: calc(100% + 26px);
+      padding: 5px 0;
+    }
+
+    select {
+      background: transparent;
+    }
+
+    button {
+      width: 100%;
+      width: 200px;
+      padding: 10px 0;
+      margin: 10px auto;
+      border-radius: 5px;
+      border: none;
+      background: #8ebf42;
+      font-size: 14px;
+      font-weight: 600;
+      color: #fff;
+      align-content: center;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #82b534;
+    }
+
+    .entry {
+      padding: 5px;
+      ;
+    }
+
+    .entry label {
+      min-width: 100px;
+      display: inline-flex;
+    }
+
+    .entry input[type=text] {
+      min-width: 400px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="main-block">
+    <form>
+      <h1>Cloudant configuration</h1>
+      <div id="status"></div>
+      <div>
+        <div>
+          <div class="entry">
+            <label>Type*</label>
+            <input type="radio" id="iamopt" name="auth_type" value="iam_auth" onclick="javascript:typeCheck();">
+            <label for="iamopt">IAM Authentication</label>
+            <input type="radio" id="basicauthopt" name="auth_type" value="basic_auth" onclick="javascript:typeCheck();">
+            <label for="basicauthopt">Basic Authentication</label>
+          </div>
+          <div class="entry"><label>URL*</label><input type="text" name="cloudant_url" required
+              value="<%= configuration.cloudantURL %>">
+          </div>
+        </div>
+        <div id="iam_auth_type">
+          <div class="entry"><label>API Key*</label><input type="text" name="cloudant_apikey" required
+              value="<%= configuration.cloudantAPIKey %>"></div>
+        </div>
+        <div id="basic_auth_type" style="display: block;">
+          <div class="entry"><label>Username*</label><input type="text" name="cloudant_username" required
+              value="<%= configuration.cloudantUserName %>"></div>
+          <div class="entry"><label>Password*</label><input type="text" name="cloudant_password" required
+              value="<%= configuration.cloudantPassword %>"></div>
+        </div>
+      </div>
+  </div>
+
+  <div style="padding-left:20px;">
+    <button type="submit" href="/" onclick="submitData()">Submit configuration</button>
+    <button href="/" onclick="loadCloudantExplorer()">Update cloudant explorer</button>
+  </div>
+  </form>
+  </div>
+</body>
+<script>
+  const vscode = acquireVsCodeApi();
+  window.onload = updateType();
+  function updateType() {
+    let authType = "<%= configuration.authType %>";
+    if (authType === "iam_auth") {
+      document.getElementById('iamopt').checked = true;
+      document.getElementById('basicauthopt').checked = false;
+    }
+    else {
+      document.getElementById('basicauthopt').checked = true;
+      document.getElementById('iamopt').checked = false;
+    }
+    typeCheck();
+  }
+
+  function submitData(event) {
+    const form = document.querySelector('form');
+    const data = Object.fromEntries(new FormData(form).entries());
+    document.getElementById("status").innerHTML = "Configuration updated successfully!";
+    alert(data);
+    vscode.postMessage({
+      command: 'sendcommand',
+      text: data
+    })
+  }
+
+  function typeCheck() {
+
+    if (document.getElementById('iamopt').checked) {
+      document.getElementById('iam_auth_type').style.display = 'block';
+      document.getElementById('basic_auth_type').style.display = 'none';
+    }
+    else {
+      document.getElementById('iam_auth_type').style.display = 'none';
+      document.getElementById('basic_auth_type').style.display = 'block';
+    }
+  }
+
+  function loadCloudantExplorer() {
+    const form = document.querySelector('form');
+    const data = Object.fromEntries(new FormData(form).entries());
+    document.getElementById("status").innerHTML = "Configuration updated successfully!";
+    alert(data);
+    vscode.postMessage({
+      command: 'loadcloudantexplorer',
+      text: "data"
+    })
+  }
+</script>
+
+</html>

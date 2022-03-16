@@ -1,0 +1,197 @@
+{
+  "name": "vscode-cloudant",
+  "displayName": "Cloudant-Explorer",
+  "description": "",
+  "publisher": "Rajesh",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.63.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "*"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "configuration": {
+      "title": "Playground Settings",
+      "properties": {
+        "cloudantexplorer.maxDocuments": {
+          "type": "number",
+          "default": 10,
+          "description": "Max number of documents to retrieve"
+        }
+      }
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "cloudant-explorer",
+          "title": "Cloudant Explorer",
+          "icon": "media/dark/cloud.svg"
+        }
+      ]
+    },
+    "views": {
+      "cloudant-explorer": [
+        {
+          "id": "cloudantExplorer",
+          "name": "Cloudant docs",
+          "icon": "media/plus-circle.svg",
+          "contextualTitle": "Cloudant Explorer"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "cloudantExplorer",
+        "contents": "No valid connections found.\n [Add Connection](command:cloudant-explorer.addConnection)",
+        "when": "cloudant-explorer.noConnection"
+      },
+      {
+        "view": "cloudantExplorer",
+        "contents": "Invalid configuration.\n[Edit connection](command:cloudant-explorer.editConnection)",
+        "when": "cloudant-explorer.invalidConnection"
+      },
+      {
+        "view": "cloudantExplorer",
+        "contents": "Connecting...",
+        "when": "cloudant-explorer.validConnectionFound"
+      }
+    ],
+    "commands": [
+      {
+        "command": "cloudant-explorer.addConnection",
+        "title": "Add Cloudant Connection"
+      },
+      {
+        "command": "cloudant-explorer.editConnection",
+        "title": "Edit Cloudant Connection"
+      },
+      {
+        "command": "cloudant-explorer.getDocument",
+        "title": "Get Document"
+      },
+      {
+        "command": "cloudant-explorer.searchDocument",
+        "title": "Search documents",
+        "icon": {
+          "light": "media/search-regular.svg",
+          "dark": "media/search-regular.svg"
+        }
+      },
+      {
+        "command": "cloudant-explorer.removeConnection",
+        "title": "Remove connection",
+        "icon": {
+          "light": "media/light/diff-removed.svg",
+          "dark": "media/dark/diff-removed.svg"
+        }
+      },
+      {
+        "command": "cloudant-explorer.editConnection",
+        "title": "Edit connection",
+        "icon": {
+          "light": "media/light/edit.svg",
+          "dark": "media/dark/edit.svg"
+        }
+      },
+      {
+        "command": "cloudant-explorer.removeFilter",
+        "title": "Remove filter",
+        "icon": {
+          "light": "media/light/filter-remove.svg",
+          "dark": "media/dark/filter-remove.svg"
+        }
+      },
+      {
+        "command": "cloudant-explorer.addDocument",
+        "title": "Add Document",
+        "icon": {
+          "light": "media/light/add.svg",
+          "dark": "media/dark/add.svg"
+        }
+      },
+      {
+        "command": "cloudant-explorer.deleteDocument",
+        "title": "Delete Document",
+        "icon": {
+          "light": "media/light/trash.svg",
+          "dark": "media/dark/trash.svg"
+        }
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "cloudant-explorer.removeConnection",
+          "when": "view == cloudantExplorer && cloudant-explorer.validConnectionFound",
+          "group": "navigation"
+        },
+        {
+          "command": "cloudant-explorer.editConnection",
+          "when": "view == cloudantExplorer && cloudant-explorer.validConnectionFound",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "cloudant-explorer.searchDocument",
+          "when": "view == cloudantExplorer && viewItem == dbname",
+          "group": "inline"
+        },
+        {
+          "command": "cloudant-explorer.removeFilter",
+          "when": "view == cloudantExplorer && viewItem == dbname-filtered",
+          "group": "inline"
+        },
+        {
+          "command": "cloudant-explorer.addDocument",
+          "when": "view == cloudantExplorer && viewItem == dbname",
+          "group": "inline"
+        },
+        {
+          "command": "cloudant-explorer.deleteDocument",
+          "when": "view == cloudantExplorer && viewItem == document",
+          "group": "inline"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run package",
+    "compile": "webpack",
+    "watch": "webpack --watch",
+    "package": "webpack --mode production --devtool hidden-source-map",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "npm run compile-tests && npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/ejs": "^3.1.0",
+    "@types/glob": "^7.2.0",
+    "@types/jest": "^27.4.0",
+    "@types/mocha": "^9.1.0",
+    "@types/node": "14.x",
+    "@types/vscode": "^1.63.0",
+    "@typescript-eslint/eslint-plugin": "^5.9.1",
+    "@typescript-eslint/parser": "^5.9.1",
+    "@vscode/test-electron": "^2.0.3",
+    "eslint": "^8.6.0",
+    "glob": "^7.2.0",
+    "mocha": "^9.1.3",
+    "ts-loader": "^9.2.6",
+    "typescript": "^4.5.4",
+    "webpack": "^5.66.0",
+    "webpack-cli": "^4.9.1"
+  },
+  "dependencies": {
+    "@ibm-cloud/cloudant": "^0.0.24",
+    "ejs": "^3.1.6",
+    "ibm-cloud-sdk-core": "^2.17.9"
+  }
+}
