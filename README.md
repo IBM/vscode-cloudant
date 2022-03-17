@@ -1,2 +1,5 @@
 # vscode-cloudant README
-TODO
+
+How to Install the extension
+![How to Install the extension](./images/how-to-install.gif)
+
