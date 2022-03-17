@@ -43,3 +43,17 @@ New features to be added:
 
 Note: In order to use IBM Cloudant service, refer https://cloud.ibm.com/docs/Cloudant?topic=Cloudant-getting-started-with-cloudant.
 
+## Contributors ✨
+
+
+
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/bodarajeshkumar"><img src="https://avatars.githubusercontent.com/u/82795269?v=3?s=100" width="100px;" alt=""/><br /><sub><b>Rajeshkumar Boda</b></sub></a><br /><a href="https://github.com/IBM/vscode-cloudant/commits?author=bodarajeshkumar" title="Documentation">📖</a> <a href="https://github.com/IBM/vscode-cloudant/pulls?q=is%3Apr+reviewed-by%3Abodarajeshkumar" title="Reviewed Pull Requests">👀</a></td>
+</td>
+<td align="center"><a href="https://github.com/Shankar-IBM-ISL-Developer"><img src="https://avatars.githubusercontent.com/u/56068832?v=3?s=100" width="100px;" alt=""/><br /><sub><b>Shankar Venkatachalam</b></sub></a><br /><a href="https://github.com/IBM/vscode-cloudant/commits?author=Shankar-IBM-ISL-Developer" title="Documentation">📖</a> <a href="https://github.com/IBM/vscode-cloudant/pulls?q=is%3Apr+reviewed-by%3AShankar-IBM-ISL-Developer" title="Reviewed Pull Requests">👀</a> </td>
+</td>
+</tr>
+</table>
+
+
