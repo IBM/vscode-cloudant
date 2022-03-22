@@ -15,14 +15,14 @@ export async function activate(context: vscode.ExtensionContext) {
 	let dbList: unknown = [];
 	let client: CloudantClient;
 
-	let configurationModel : ConfigurationModel = new ConfigurationModel(context);
+	let configurationModel: ConfigurationModel = new ConfigurationModel(context);
 	vscode.commands.executeCommand('setContext', 'cloudant-explorer.invalidConnection', false);
 	vscode.commands.executeCommand('setContext', 'cloudant-explorer.noConnection', true);
 	connectToDatabase();
 	async function connectToDatabase() {
 		configurationModel = new ConfigurationModel(context);
 		if ((configurationModel.authType === "iam_auth" && configurationModel.cloudantURL && configurationModel.cloudantAPIKey)
-		|| ( configurationModel.authType === "basic_auth" && configurationModel.cloudantUserName && configurationModel.cloudantPassword && configurationModel.cloudantURL)) {
+			|| (configurationModel.authType === "basic_auth" && configurationModel.cloudantUserName && configurationModel.cloudantPassword && configurationModel.cloudantURL)) {
 			client = new CloudantClient(context);
 			if (await client.checkConnection()) {
 				vscode.commands.executeCommand('setContext', 'cloudant-explorer.noConnection', false);
@@ -41,6 +41,12 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	context.subscriptions.push(vscode.commands.registerCommand('cloudant-explorer.addConnection', async (item) => {
 		showConfigurationPanel();
+	}));
+
+	context.subscriptions.push(vscode.commands.registerCommand('cloudant-explorer.refreshTreeView', async (item) => {
+		vscode.window.createTreeView("cloudantExplorer", {
+			treeDataProvider: new ViewDataProvider(dbList, filterCriteria, client)
+		});
 	}));
 
 	context.subscriptions.push(vscode.commands.registerCommand('cloudant-explorer.searchDocument', async (item) => {
@@ -82,14 +88,15 @@ export async function activate(context: vscode.ExtensionContext) {
 	}));
 
 	vscode.workspace.onDidSaveTextDocument(async (textDocument: vscode.TextDocument) => {
-		await saveDocument(textDocument.uri.path, textDocument.getText(), client);
-		vscode.window.createTreeView("cloudantExplorer", {
-			treeDataProvider: new ViewDataProvider(dbList, filterCriteria, client)
-		});
+		if (textDocument.uri.path.indexOf(".json") > 0) {
+			await saveDocument(textDocument.uri.path, textDocument.getText(), client);
+			vscode.window.createTreeView("cloudantExplorer", {
+				treeDataProvider: new ViewDataProvider(dbList, filterCriteria, client)
+			}); 
+		}
 	});
 
-	function showConfigurationPanel()
-	{
+	function showConfigurationPanel() {
 		const panel = vscode.window.createWebviewPanel(
 			'Configure Cloudant',
 			'Configure Cloudant',
@@ -107,22 +114,22 @@ export async function activate(context: vscode.ExtensionContext) {
 		panel.webview.onDidReceiveMessage(
 			async data => {
 				vscode.window.showInformationMessage(data);
-			switch (data.command) {
-				case 'sendcommand':
-					console.log(data.text);
-					for (var key in data.text) {
-						console.log(key + " -> " + data.text[key]);
-						context.globalState.update(key, data.text[key]);
-					}
-					return;
-				case 'loadcloudantexplorer':
-					console.log(data.text);
-					connectToDatabase();
-					return;
-			}
-		},
-		undefined,
-		context.subscriptions
+				switch (data.command) {
+					case 'sendcommand':
+						console.log(data.text);
+						for (var key in data.text) {
+							console.log(key + " -> " + data.text[key]);
+							context.globalState.update(key, data.text[key]);
+						}
+						return;
+					case 'loadcloudantexplorer':
+						console.log(data.text);
+						connectToDatabase();
+						return;
+				}
+			},
+			undefined,
+			context.subscriptions
 		);
 	}
 }
@@ -132,7 +139,7 @@ export async function activate(context: vscode.ExtensionContext) {
 function getWebviewContent(webView: vscode.Webview, context: vscode.ExtensionContext, csspath: vscode.Uri) {
 	let configuration: ConfigurationModel = new ConfigurationModel(context);
 	let html = fs.readFileSync(path.join(__filename, '..', '..', 'resources') + "/new-config-form.html", 'utf8');
-	let newconfig:any = configuration;
+	let newconfig: any = configuration;
 	newconfig.csspath = csspath;
 	return ejs.render(html, { configuration: newconfig });
 }

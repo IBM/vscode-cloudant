@@ -95,6 +95,14 @@
         }
       },
       {
+        "command": "cloudant-explorer.refreshTreeView",
+        "title": "Refresh view",
+        "icon": {
+          "light": "media/light/refresh.svg",
+          "dark": "media/dark/refresh.svg"
+        }
+      },
+      {
         "command": "cloudant-explorer.editConnection",
         "title": "Edit connection",
         "icon": {
@@ -129,6 +137,11 @@
     ],
     "menus": {
       "view/title": [
+        {
+          "command": "cloudant-explorer.refreshTreeView",
+          "when": "view == cloudantExplorer",
+          "group": "navigation"
+        },
         {
           "command": "cloudant-explorer.removeConnection",
           "when": "view == cloudantExplorer && cloudant-explorer.validConnectionFound",
