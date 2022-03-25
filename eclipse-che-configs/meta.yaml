@@ -1,16 +1,16 @@
 apiVersion: v2
-publisher: ibm-playground
+publisher: Rajesh
 name: cloudant-ext
 version: 0.0.1
 type: VS Code extension
-displayName: APIHub
+displayName: CloudantExplorer
 title: Cloudant explorer
-description: This extension is cloudant explorer
+description: This is cloudant explorer
 icon: https://www-03.ibm.com/press/us/en/attachment/20190.wss?fileId=ATTACH_FILE2&fileName=ibmpos_blue.jpg
 repository: https://github.com/IBM/vscode-cloudant
 category: Editor
 firstPublicationDate: '2022-03-25'
 spec:
     extensions:
-        - https://github.com/IBM/vscode-cloudant/blob/main/vscode-cloudant-0.0.1.vsix?raw=true
+        - https://raw.githubusercontent.com/IBM/vscode-cloudant/main/vscode-cloudant-0.0.1.vsix
 latestUpdateDate: "2022-03-25"
