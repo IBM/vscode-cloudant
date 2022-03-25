@@ -44,9 +44,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	}));
 
 	context.subscriptions.push(vscode.commands.registerCommand('cloudant-explorer.refreshTreeView', async (item) => {
-		vscode.window.createTreeView("cloudantExplorer", {
-			treeDataProvider: new ViewDataProvider(dbList, filterCriteria, client)
-		});
+		connectToDatabase();
 	}));
 
 	context.subscriptions.push(vscode.commands.registerCommand('cloudant-explorer.searchDocument', async (item) => {

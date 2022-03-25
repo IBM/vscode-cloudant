@@ -1,0 +1,14 @@
+apiVersion: v2                                                   
+publisher: rajesh                                                 
+name: my-vscode-cloudant-ext                                              
+version: 1.7.2                                                   
+type: value                                                      
+displayName:                                                     
+title:                                                           
+description:                                                     
+icon: https://www.eclipse.org/che/images/logo-eclipseche.svg     
+repository:                                                     
+category:                                                       
+spec:                                               
+  extensions:                                                   
+          - https://github.com/IBM/vscode-cloudant/blob/main/vscode-cloudant-0.0.1.vsix?raw=true
