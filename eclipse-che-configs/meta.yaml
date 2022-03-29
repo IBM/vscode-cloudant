@@ -1,14 +1,16 @@
-apiVersion: v2                                                   
-publisher: rajesh                                                 
-name: my-vscode-cloudant-ext                                              
-version: 1.7.2                                                   
-type: value                                                      
-displayName:                                                     
-title:                                                           
-description:                                                     
-icon: https://www.eclipse.org/che/images/logo-eclipseche.svg     
-repository:                                                     
-category:                                                       
-spec:                                               
-  extensions:                                                   
-          - https://github.com/IBM/vscode-cloudant/blob/main/vscode-cloudant-0.0.1.vsix?raw=true
+apiVersion: v2
+publisher: Rajesh
+name: cloudant-ext
+version: 0.0.1
+type: VS Code extension
+displayName: CloudantExplorer
+title: Cloudant explorer
+description: This is cloudant explorer
+icon: https://www-03.ibm.com/press/us/en/attachment/20190.wss?fileId=ATTACH_FILE2&fileName=ibmpos_blue.jpg
+repository: https://github.com/IBM/vscode-cloudant
+category: Editor
+firstPublicationDate: '2022-03-25'
+spec:
+    extensions:
+        - https://raw.githubusercontent.com/IBM/vscode-cloudant/main/vscode-cloudant-0.0.1.vsix
+latestUpdateDate: "2022-03-25"
