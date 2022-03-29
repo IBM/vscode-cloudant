@@ -28,9 +28,8 @@ export async function activate(context: vscode.ExtensionContext) {
 				vscode.commands.executeCommand('setContext', 'cloudant-explorer.noConnection', false);
 				vscode.commands.executeCommand('setContext', 'cloudant-explorer.validConnectionFound', true);
 				dbList = await client.getDatabases();
-				vscode.window.createTreeView("cloudantExplorer", {
-					treeDataProvider: new ViewDataProvider(dbList, filterCriteria, client)
-				});
+				vscode.window.registerTreeDataProvider("cloudantExplorer", new ViewDataProvider(dbList, filterCriteria, client)
+				);
 			}
 			else {
 				vscode.commands.executeCommand('setContext', 'cloudant-explorer.invalidConnection', true);
@@ -79,18 +78,16 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	context.subscriptions.push(vscode.commands.registerCommand('cloudant-explorer.deleteDocument', async (item) => {
 		await deleteDocument(item, client);
-		vscode.window.createTreeView("cloudantExplorer", {
-			treeDataProvider: new ViewDataProvider(dbList, filterCriteria, client)
-		});
+		vscode.window.registerTreeDataProvider("cloudantExplorer",  new ViewDataProvider(dbList, filterCriteria, client)
+		);
 
 	}));
 
 	vscode.workspace.onDidSaveTextDocument(async (textDocument: vscode.TextDocument) => {
 		if (textDocument.uri.path.indexOf(".json") > 0) {
 			await saveDocument(textDocument.uri.path, textDocument.getText(), client);
-			vscode.window.createTreeView("cloudantExplorer", {
-				treeDataProvider: new ViewDataProvider(dbList, filterCriteria, client)
-			}); 
+			vscode.window.registerTreeDataProvider("cloudantExplorer", new ViewDataProvider(dbList, filterCriteria, client)
+			); 
 		}
 	});
 

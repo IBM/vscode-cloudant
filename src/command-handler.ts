@@ -14,9 +14,8 @@ export async function removeConnection(context: vscode.ExtensionContext) {
     vscode.commands.executeCommand('setContext', 'cloudant-explorer.noConnection', true);
     vscode.commands.executeCommand('setContext', 'cloudant-explorer.invalidConnection', false);
     vscode.commands.executeCommand('setContext', 'cloudant-explorer.validConnectionFound', false);
-    vscode.window.createTreeView("cloudantExplorer", {
-        treeDataProvider: new ViewDataProvider([], undefined, undefined)
-    });
+    vscode.window.registerTreeDataProvider("cloudantExplorer", 
+       new ViewDataProvider([], undefined, undefined))
 }
 
 export async function handleSearch(item: any, dbList: any, filterCriteria: Map<string, any>, client: CloudantClient) {
@@ -35,9 +34,8 @@ export async function handleSearch(item: any, dbList: any, filterCriteria: Map<s
             vscode.window.showInformationMessage('Not a valid search string');
             return;
         }
-        vscode.window.createTreeView("cloudantExplorer", {
-            treeDataProvider: new ViewDataProvider(dbList, filterCriteria, client)
-        });
+        vscode.window.registerTreeDataProvider("cloudantExplorer", new ViewDataProvider(dbList, filterCriteria, client)
+        );
     }
 }
 
@@ -47,17 +45,15 @@ export async function clearFilter(item: any, dbList: any, filterCriteria: Map<st
         filterCriteria.delete(item.id);
     }
 
-    vscode.window.createTreeView("cloudantExplorer", {
-        treeDataProvider: new ViewDataProvider(dbList, filterCriteria, client)
-    });
+    vscode.window.registerTreeDataProvider("cloudantExplorer", new ViewDataProvider(dbList, filterCriteria, client)
+    );
 
 }
 
 export async function clearAllFilters(dbList: any, filterCriteria: Map<string, any>, client: CloudantClient) {
     filterCriteria.clear();
-    vscode.window.createTreeView("cloudantExplorer", {
-        treeDataProvider: new ViewDataProvider(dbList, filterCriteria, client)
-    });
+    vscode.window.registerTreeDataProvider("cloudantExplorer", new ViewDataProvider(dbList, filterCriteria, client)
+    );
 }
 
 export async function openDocument(element: ViewDataEntry, docId: string, client: CloudantClient) {
