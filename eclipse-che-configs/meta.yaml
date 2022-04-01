@@ -1,7 +1,7 @@
 apiVersion: v2
 publisher: Rajesh
 name: cloudant-ext
-version: 0.0.1
+version: 0.0.2
 type: VS Code extension
 displayName: CloudantExplorer
 title: Cloudant explorer
@@ -12,5 +12,5 @@ category: Editor
 firstPublicationDate: '2022-03-25'
 spec:
     extensions:
-        - https://raw.githubusercontent.com/IBM/vscode-cloudant/main/vscode-cloudant-0.0.1.vsix
+        - https://raw.githubusercontent.com/IBM/vscode-cloudant/main/vscode-cloudant-0.0.2.vsix
 latestUpdateDate: "2022-03-25"
