@@ -14,9 +14,12 @@ export async function removeConnection(context: vscode.ExtensionContext) {
     vscode.commands.executeCommand('setContext', 'cloudant-explorer.noConnection', true);
     vscode.commands.executeCommand('setContext', 'cloudant-explorer.invalidConnection', false);
     vscode.commands.executeCommand('setContext', 'cloudant-explorer.validConnectionFound', false);
+    let treeDataProvider = new ViewDataProvider([], undefined, undefined);
     vscode.window.createTreeView("cloudantExplorer", {
-        treeDataProvider: new ViewDataProvider([], undefined, undefined)
+        treeDataProvider: treeDataProvider
     });
+    treeDataProvider.refresh();
+
 }
 
 export async function handleSearch(item: any, dbList: any, filterCriteria: Map<string, any>, client: CloudantClient) {
@@ -35,9 +38,11 @@ export async function handleSearch(item: any, dbList: any, filterCriteria: Map<s
             vscode.window.showInformationMessage('Not a valid search string');
             return;
         }
+        let treeDataProvider = new ViewDataProvider(dbList, filterCriteria, client);
         vscode.window.createTreeView("cloudantExplorer", {
-            treeDataProvider: new ViewDataProvider(dbList, filterCriteria, client)
+            treeDataProvider: treeDataProvider
         });
+        treeDataProvider.refresh();
     }
 }
 
@@ -47,17 +52,22 @@ export async function clearFilter(item: any, dbList: any, filterCriteria: Map<st
         filterCriteria.delete(item.id);
     }
 
+
+    let treeDataProvider = new ViewDataProvider(dbList, filterCriteria, client);
     vscode.window.createTreeView("cloudantExplorer", {
-        treeDataProvider: new ViewDataProvider(dbList, filterCriteria, client)
+        treeDataProvider: treeDataProvider
     });
+    treeDataProvider.refresh();
 
 }
 
 export async function clearAllFilters(dbList: any, filterCriteria: Map<string, any>, client: CloudantClient) {
     filterCriteria.clear();
+    let treeDataProvider = new ViewDataProvider(dbList, filterCriteria, client);
     vscode.window.createTreeView("cloudantExplorer", {
-        treeDataProvider: new ViewDataProvider(dbList, filterCriteria, client)
+        treeDataProvider: treeDataProvider
     });
+    treeDataProvider.refresh();
 }
 
 export async function openDocument(element: ViewDataEntry, docId: string, client: CloudantClient) {
@@ -87,7 +97,7 @@ export async function saveDocument(filePath: string, document: string, client: C
     } else {
         await client.saveDocument(dbName, docId, document);
     }
-    
+
 }
 
 export async function createDocument(element: ViewDataEntry) {
@@ -97,7 +107,7 @@ export async function createDocument(element: ViewDataEntry) {
     }
     let filePath = path.join(dir, "launchpad" + ".json");
     var openPath = vscode.Uri.file(filePath);
-    let data: string = JSON.stringify({_id: ''});
+    let data: string = JSON.stringify({ _id: '' });
     fs.writeFileSync(filePath, data, 'utf-8');
     vscode.workspace.openTextDocument(openPath).then(doc1 => {
         vscode.window.showTextDocument(doc1, { preview: false });
