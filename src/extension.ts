@@ -32,7 +32,7 @@ export async function activate(context: vscode.ExtensionContext) {
 				vscode.window.createTreeView("cloudantExplorer", {
 					treeDataProvider: treeDataProvider
 				});
-				treeDataProvider.refresh();
+				//treeDataProvider.refresh();
 			}
 			else {
 				vscode.commands.executeCommand('setContext', 'cloudant-explorer.invalidConnection', true);
@@ -85,7 +85,7 @@ export async function activate(context: vscode.ExtensionContext) {
 		vscode.window.createTreeView("cloudantExplorer", {
 			treeDataProvider: treeDataProvider
 		});
-		treeDataProvider.refresh();
+		//treeDataProvider.refresh();
 
 	}));
 
@@ -96,7 +96,7 @@ export async function activate(context: vscode.ExtensionContext) {
 			vscode.window.createTreeView("cloudantExplorer", {
 				treeDataProvider: treeDataProvider
 			});
-			treeDataProvider.refresh();
+			//treeDataProvider.refresh();
 			}
 	});
 

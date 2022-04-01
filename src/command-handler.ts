@@ -18,7 +18,7 @@ export async function removeConnection(context: vscode.ExtensionContext) {
     vscode.window.createTreeView("cloudantExplorer", {
         treeDataProvider: treeDataProvider
     });
-    treeDataProvider.refresh();
+   // treeDataProvider.refresh();
 
 }
 
@@ -42,7 +42,7 @@ export async function handleSearch(item: any, dbList: any, filterCriteria: Map<s
         vscode.window.createTreeView("cloudantExplorer", {
             treeDataProvider: treeDataProvider
         });
-        treeDataProvider.refresh();
+        //treeDataProvider.refresh();
     }
 }
 
@@ -57,7 +57,7 @@ export async function clearFilter(item: any, dbList: any, filterCriteria: Map<st
     vscode.window.createTreeView("cloudantExplorer", {
         treeDataProvider: treeDataProvider
     });
-    treeDataProvider.refresh();
+    //treeDataProvider.refresh();
 
 }
 
@@ -67,7 +67,7 @@ export async function clearAllFilters(dbList: any, filterCriteria: Map<string, a
     vscode.window.createTreeView("cloudantExplorer", {
         treeDataProvider: treeDataProvider
     });
-    treeDataProvider.refresh();
+    //treeDataProvider.refresh();
 }
 
 export async function openDocument(element: ViewDataEntry, docId: string, client: CloudantClient) {
